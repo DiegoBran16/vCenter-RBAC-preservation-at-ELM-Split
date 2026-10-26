@@ -20,16 +20,17 @@ PowerShell toolkit for **backing up, comparing, and conditionally restoring vCen
 | --- | --- |
 | PRE, CURRENT, COMPARE, RESTORE, and POST workflows | Lab validated on vCenter Server 8 |
 | Custom role recovery | Lab validated (2 roles restored) |
-| Local SSO permissions | Lab validated (1 Global + 1 Inventory restored) |
-| OpenLDAP user permissions | Lab validated (1 Global + 1 Inventory restored) |
+| Local SSO permissions | Lab validated: 1 Global Permission assigned to a group + 1 Inventory Permission assigned to a user |
+| OpenLDAP group — Global Permission | **Lab validated** (1 permission restored) |
+| OpenLDAP user — cluster Inventory Permission | **Lab validated** (1 permission restored) |
 | Microsoft Active Directory via an integrated LDAP/LDAPS identity source | **Expected to work, not yet tested** |
-| LDAP/AD group-permission recovery | Not yet validated |
+| Microsoft AD user/group-permission recovery | Not yet tested with Microsoft AD |
 | Federated external IdPs | Automated identity recovery not established; manual review required |
 | Full ELM split and production deployment | Outside this tool's validation scope |
 
-In the local SSO lab scenario, independent POST verification returned **50/50 roles**, **27/27 Global Permissions**, and **6/6 Inventory Permissions** as `MATCH`. These counts reflect that specific lab, not required values for other environments.
+In the local SSO lab scenario, the deliberately removed Global Permission belonged to a local SSO group and the Inventory Permission belonged to a local SSO user. Independent POST verification returned **50/50 roles**, **27/27 Global Permissions**, and **6/6 Inventory Permissions** as `MATCH`. These counts reflect that specific lab, not required values for other environments.
 
-**Microsoft AD note:** The successful OpenLDAP user-permission test and the tool's directory-backed identity-resolution approach provide a reasonable technical basis to expect Microsoft AD users to work when AD is configured as an integrated vCenter LDAP/LDAPS identity source. **This has not been tested end-to-end with Microsoft AD, and compatibility is not guaranteed.** Validate users, groups, domain aliases, and both permission types in a non-production AD-connected vCenter first.
+**Microsoft AD note:** The successful OpenLDAP group and user permission-recovery tests and the tool's directory-backed identity-resolution approach provide a reasonable technical basis to expect Microsoft AD principals to work when AD is configured as an integrated vCenter LDAP/LDAPS identity source. **This has not been tested end-to-end with Microsoft AD, and compatibility is not guaranteed.** Validate users, groups, domain aliases, and both permission types in a non-production AD-connected vCenter first.
 
 ## Requirements
 
@@ -91,6 +92,12 @@ vCenter-RBAC-preservation-at-ELM-Split/
 └── scripts/
     └── vCenter-ELM-RBAC-v0.1.0.ps1
 ```
+
+## Development acknowledgment
+
+This tool was developed with AI assistance for PowerShell scripting, troubleshooting, code refinement, and documentation. Technical requirements, implementation decisions, and functional testing were directed and validated by the project author.
+
+The tool was iteratively tested in a controlled vCenter Server 8 laboratory, including RBAC backup, comparison, and recovery of custom roles, local SSO permissions, and OpenLDAP permissions (a group-assigned Global Permission and a user-assigned cluster Inventory Permission). AI assistance does not replace independent code review, change control, or validation in the intended environment.
 
 **Documentation:** [Operator Runbook](docs/Operator-Runbook.md) · [Changelog](CHANGELOG.md)
 

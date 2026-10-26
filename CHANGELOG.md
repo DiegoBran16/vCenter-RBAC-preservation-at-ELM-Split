@@ -18,17 +18,17 @@ The project provides a PowerShell toolkit for preserving, comparing, and conditi
 - Conditional restoration of missing custom roles and eligible permissions through a reviewed restore plan and a single explicit **`APPLY ALL`** authorization.
 - Identity preflight for local SSO and supported integrated AD/LDAP identity sources; ambiguous or unresolved principals are not automatically restored.
 - Session-only handling of untrusted certificates after explicit operator acknowledgement for controlled lab scenarios.
-- English-language messages and an [Operator Runbook](docs/Operator-Runbook.md).
+-  An [Operator Runbook](docs/Operator-Runbook.md).
 
 ### Lab validation
 
-- **Local SSO scenario:** tested in a controlled **vCenter Server 8** lab with deliberately removed custom roles and local SSO permissions. Successfully restored **2 custom roles**, **1 Global Permission**, and **1 Inventory Permission**.
+- **Local SSO scenario:** tested in a controlled **vCenter Server 8** lab with deliberately removed custom roles and local SSO permissions. Successfully restored **2 custom roles**, **1 Global Permission assigned to a local SSO group**, and **1 Inventory Permission assigned to a local SSO user**.
 - **Local SSO independent POST:** reconciled the baseline with **50/50 roles**, **27/27 Global Permissions**, and **6/6 Inventory Permissions** reported as `MATCH`. These counts are specific to that lab, not expected values for other vCenters.
-- **OpenLDAP scenario:** separately tested OpenLDAP user accounts configured through a vCenter identity source, using the **same number and types of deliberately removed permissions as the local SSO test: 1 Global Permission and 1 Inventory Permission**. Both permissions were successfully restored. This validates the tested OpenLDAP user-principal recovery path for **both permission types**; it does **not** establish compatibility with every LDAP directory or account type.
+- **OpenLDAP scenario:** separately tested principals provided by an OpenLDAP vCenter identity source. Deliberately removed and successfully restored **1 Global Permission assigned to an OpenLDAP group** and **1 Inventory Permission assigned to an OpenLDAP user on a cluster**—the same number and permission types as in the local SSO scenario. This validates the tested OpenLDAP **group (Global)** and **user (Inventory)** recovery paths; it does **not** establish that every combination of account type, permission scope, LDAP directory, or identity-source configuration will work.
 
 ### Known limitations and validation boundaries
 
-- **Microsoft Active Directory**, LDAP implementations other than the tested OpenLDAP configuration, and **LDAP/AD group-permission restoration** have **not** been independently validated end-to-end in this release. **Microsoft AD configured as an integrated LDAP/LDAPS identity source is expected to be compatible** with the existing identity-resolution and restoration workflow, based on the successful OpenLDAP user-permission test and the tool's use of PowerCLI directory-account lookup. This is a **technical expectation, not a verified compatibility claim**; AD users and groups must be tested separately before production use.
+- **Microsoft Active Directory** and LDAP implementations other than the tested OpenLDAP configuration have **not** been independently validated end-to-end in this release. **Microsoft AD configured as an integrated LDAP/LDAPS identity source is expected to be compatible** with the existing identity-resolution and restoration workflow, based on successful OpenLDAP **group and user** recovery and the tool's use of PowerCLI directory-account lookup. This is a **technical expectation, not a verified compatibility claim**; AD users and groups must be tested separately before production use. Only the tested OpenLDAP group/Global and user/cluster-Inventory combinations are established by the lab evidence.
 - External **federated IdP** identities may not be resolvable by the tool; automated restoration must stop when identity verification is unavailable.
 - A complete real-world ELM split and production deployment have not been validated with this release.
 - Changes reported as `DRIFT` or system/service-account anomalies require manual investigation; the tool must not silently overwrite them.
