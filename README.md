@@ -1,4 +1,4 @@
-# vCenter ELM RBAC Recovery
+# vCenter RBAC Preservarion at ELM Split
 
 PowerShell toolkit for **backing up, comparing, and conditionally restoring vCenter Server roles, Global Permissions, and Inventory Permissions** before and after a VMware vCenter Enhanced Linked Mode (ELM) split.
 
