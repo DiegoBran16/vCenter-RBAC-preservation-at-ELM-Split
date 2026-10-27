@@ -1,0 +1,9 @@
+.DS_Store
+*.log
+*.transcript
+PRE/
+CURRENT-*/
+POST-*/
+RestorePlan.csv
+RoleComparison.csv
+PermissionComparison.csv
